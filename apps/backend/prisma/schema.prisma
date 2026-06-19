@@ -1,0 +1,76 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String          @id @default(uuid()) @db.Uuid
+  email        String          @unique
+  passwordHash String
+  name         String?
+  progress     StoryProgress[]
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+}
+
+model Manga {
+  id        String          @id @default(uuid()) @db.Uuid
+  title     String
+  chapters  Chapter[]
+  characters Character[]
+  progress  StoryProgress[]
+}
+
+model Chapter {
+  id            String          @id @default(uuid()) @db.Uuid
+  mangaId       String          @db.Uuid
+  manga         Manga           @relation(fields: [mangaId], references: [id], onDelete: Cascade)
+  chapterNumber Int
+  title         String?
+  pdfPath       String
+  status        String
+  events        StoryEvent[]
+  progress      StoryProgress[]
+
+  @@unique([mangaId, chapterNumber])
+}
+
+model StoryEvent {
+  id          String          @id @default(uuid()) @db.Uuid
+  chapterId   String          @db.Uuid
+  chapter     Chapter         @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  eventOrder  Int
+  title       String
+  description String
+  progress    StoryProgress[]
+
+  @@unique([chapterId, eventOrder])
+}
+
+model Character {
+  id          String  @id @default(uuid()) @db.Uuid
+  mangaId     String  @db.Uuid
+  manga       Manga   @relation(fields: [mangaId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+
+  @@unique([mangaId, name])
+}
+
+model StoryProgress {
+  id        String     @id @default(uuid()) @db.Uuid
+  userId    String     @db.Uuid
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mangaId   String     @db.Uuid
+  manga     Manga      @relation(fields: [mangaId], references: [id], onDelete: Cascade)
+  chapterId String     @db.Uuid
+  chapter   Chapter    @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  eventId   String     @db.Uuid
+  event     StoryEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, mangaId])
+}
