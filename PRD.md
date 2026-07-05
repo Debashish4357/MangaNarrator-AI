@@ -1,13 +1,14 @@
 # Product Requirements Document (PRD)
+
 ## MangaNarrator AI: Simplified Multimodal Manga-to-Audio Experience
 
-| Attribute | Details |
-| :--- | :--- |
-| **Product Name** | MangaNarrator AI |
-| **Document Version** | 1.2.0 |
-| **Date** | June 19, 2026 |
-| **Status** | Draft / Ready for Review |
-| **Author** | Antigravity AI |
+| Attribute            | Details                  |
+| :------------------- | :----------------------- |
+| **Product Name**     | MangaNarrator AI         |
+| **Document Version** | 1.2.0                    |
+| **Date**             | June 19, 2026            |
+| **Status**           | Draft / Ready for Review |
+| **Author**           | Antigravity AI           |
 
 ---
 
@@ -22,8 +23,9 @@ Our core focus is accessibility and convenience, making visual storytelling easi
 ## 2. Problem Statement
 
 Reading manga demands continuous visual attention, which limits multitasking and creates a barrier for visually impaired fans. Standard screen readers fail because:
-* Manga layouts read from right-to-left and contain complex dialogue ordering.
-* Visual-only background actions, environment context, and facial expressions are key to the plot but are invisible to non-visual players.
+
+- Manga layouts read from right-to-left and contain complex dialogue ordering.
+- Visual-only background actions, environment context, and facial expressions are key to the plot but are invisible to non-visual players.
 
 MangaNarrator AI solves this by converting raw pages into structured, sequenced story events using Multimodal Vision-Language Models (VLMs) and advanced OCR, generating a unified story script that is read aloud by a single narrator voice.
 
@@ -37,10 +39,7 @@ Every processed chapter is analyzed and compiled into a single structured JSON t
 {
   "chapter": 1,
   "summary": "Saitama fights a giant crab monster, establishing his goal to become a hero.",
-  "characters": [
-    "Saitama",
-    "Crablante"
-  ],
+  "characters": ["Saitama", "Crablante"],
   "events": [
     {
       "order": 1,
@@ -63,10 +62,12 @@ This structure feeds directly into the narration engine and bounds the QA timeli
 ## 4. User Personas
 
 ### Persona A: Hiroshi Sato (The Multitasking Enthusiast)
-* **Goal:** Wants to upload a chapter PDF, start playing, and listen to the story while driving. He can type questions during pauses if he wants details on a specific scene.
+
+- **Goal:** Wants to upload a chapter PDF, start playing, and listen to the story while driving. He can type questions during pauses if he wants details on a specific scene.
 
 ### Persona B: Elena Rostova (The Visually Impaired Fan)
-* **Goal:** Needs a clean, accessible layout that provides visual descriptions of characters and actions alongside dialogue, with an AI that answers questions about visual events happening in past chapters.
+
+- **Goal:** Needs a clean, accessible layout that provides visual descriptions of characters and actions alongside dialogue, with an AI that answers questions about visual events happening in past chapters.
 
 ---
 
@@ -97,42 +98,49 @@ Progress Tracking (Save Bookmarks)
 ## 6. Functional Requirements
 
 ### 6.1 Manga Upload & Image Extraction (FR-1)
-* **Format Support:** PDF files up to 100MB/100 pages.
-* **Extraction:** Automatically convert PDF pages to clean PNG images at 150 DPI in a background job.
+
+- **Format Support:** PDF files up to 100MB/100 pages.
+- **Extraction:** Automatically convert PDF pages to clean PNG images at 150 DPI in a background job.
 
 ### 6.2 Page-Level AI Processing & Event Generation (FR-2)
-* **VLM Extraction:** For each page image, Gemini 2.5 Flash extracts:
-  * Ordered dialogues (respecting right-to-left layout order).
-  * A detailed scene summary (visual descriptions of characters, expressions, actions, and settings).
-* **Story Compiler:** Sequences page summaries and dialogues into structured, chronological events (storing `order`, `title`, `description`).
-* **No Panel Segmentation:** Panel coordinate parsing is out of scope. Gemini performs a unified page-level evaluation.
+
+- **VLM Extraction:** For each page image, Gemini 2.5 Flash extracts:
+  - Ordered dialogues (respecting right-to-left layout order).
+  - A detailed scene summary (visual descriptions of characters, expressions, actions, and settings).
+- **Story Compiler:** Sequences page summaries and dialogues into structured, chronological events (storing `order`, `title`, `description`).
+- **No Panel Segmentation:** Panel coordinate parsing is out of scope. Gemini performs a unified page-level evaluation.
 
 ### 6.3 Narration Player (FR-3)
-* Play/pause controls, progress bar, playback speed setting.
-* Single Expressive Narrator voice reading the synthesized text containing descriptive cues and dialogues. No multi-voice cast assignment.
+
+- Play/pause controls, progress bar, playback speed setting.
+- Single Expressive Narrator voice reading the synthesized text containing descriptive cues and dialogues. No multi-voice cast assignment.
 
 ### 6.4 Interrupt & Text Q&A (FR-4)
-* Manual interrupt button pauses the audio player.
-* Text input interface allowing users to type questions (e.g. *"Who is Sasuke fighting?"*).
-* Returns context-limited answers without reading future story events.
+
+- Manual interrupt button pauses the audio player.
+- Text input interface allowing users to type questions (e.g. _"Who is Sasuke fighting?"_).
+- Returns context-limited answers without reading future story events.
 
 ### 6.5 Resume Playback (FR-5)
-* Save position bookmark (chapter ID, event ID) dynamically to database to enable continuation.
+
+- Save position bookmark (chapter ID, event ID) dynamically to database to enable continuation.
 
 ---
 
 ## 7. Out of Scope
 
 The following features are strictly **Out of Scope** for the MVP:
-* **Panel Segmentation:** Bounding box calculations are removed.
-* **Multi-Voice Casting:** Differentiated voice actors or age/gender-cloned voices are removed.
-* **Character Relationship Graphs:** Active status tracking of relationships (e.g., rivalries, friendships) is deferred.
-* **Voice-Activated QA / Voice Interruption:** Voice wake words and speech-to-text input are removed (Text input only).
-* **Animation & Video Generation.**
-* **Social Systems or native mobile applications.**
+
+- **Panel Segmentation:** Bounding box calculations are removed.
+- **Multi-Voice Casting:** Differentiated voice actors or age/gender-cloned voices are removed.
+- **Character Relationship Graphs:** Active status tracking of relationships (e.g., rivalries, friendships) is deferred.
+- **Voice-Activated QA / Voice Interruption:** Voice wake words and speech-to-text input are removed (Text input only).
+- **Animation & Video Generation.**
+- **Social Systems or native mobile applications.**
 
 ---
 
 ## 8. Success Metrics
-* **Processing Uptime:** Processing page images using Gemini successfully finishes without queue failures in $\ge$ 98.5% of cases.
-* **Contextual Correctness:** AI answers to text questions verify correctly against database records without introducing future chapter details.
+
+- **Processing Uptime:** Processing page images using Gemini successfully finishes without queue failures in $\ge$ 98.5% of cases.
+- **Contextual Correctness:** AI answers to text questions verify correctly against database records without introducing future chapter details.

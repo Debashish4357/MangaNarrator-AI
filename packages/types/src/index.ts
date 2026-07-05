@@ -1,10 +1,15 @@
-export interface MangaDto {
+export interface User {
   id: string;
-  title: string;
-  description?: string;
+  email: string;
+  name?: string;
 }
 
-export interface ChapterDto {
+export interface Manga {
+  id: string;
+  title: string;
+}
+
+export interface Chapter {
   id: string;
   mangaId: string;
   chapterNumber: number;
@@ -13,7 +18,7 @@ export interface ChapterDto {
   status: string;
 }
 
-export interface StoryEventDto {
+export interface StoryEvent {
   id: string;
   chapterId: string;
   eventOrder: number;
@@ -21,28 +26,17 @@ export interface StoryEventDto {
   description: string;
 }
 
-export interface CharacterDto {
+export interface Character {
   id: string;
   mangaId: string;
   name: string;
   description?: string;
 }
 
-export interface StoryProgressDto {
+export interface StoryProgress {
   id: string;
   userId: string;
   mangaId: string;
   chapterId: string;
   eventId: string;
-}
-
-export interface ChapterStoryEventsPayload {
-  chapter: number;
-  summary: string;
-  characters: string[];
-  events: {
-    order: number;
-    title: string;
-    description: string;
-  }[];
 }

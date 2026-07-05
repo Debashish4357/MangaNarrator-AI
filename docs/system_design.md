@@ -1,18 +1,20 @@
 # System Design Document (SDD)
+
 ## MangaNarrator AI: Simplified High-Level Architecture & Technical Blueprint
 
-| Attribute | Details |
-| :--- | :--- |
-| **Product Name** | MangaNarrator AI |
-| **Document Version** | 1.2.0 |
-| **Date** | June 19, 2026 |
-| **Tech Stack** | Next.js (App Router), NestJS, PostgreSQL, Prisma, Gemini 2.5 Flash |
+| Attribute            | Details                                                            |
+| :------------------- | :----------------------------------------------------------------- |
+| **Product Name**     | MangaNarrator AI                                                   |
+| **Document Version** | 1.2.0                                                              |
+| **Date**             | June 19, 2026                                                      |
+| **Tech Stack**       | Next.js (App Router), NestJS, PostgreSQL, Prisma, Gemini 2.5 Flash |
 
 ---
 
 ## 1. High-Level Architecture
 
 MangaNarrator AI is a decoupled Web Application containing:
+
 1. **Next.js Client App:** An interactive visual dashboard, reader page, and chat drawer.
 2. **NestJS API Server:** Handles upload, page extraction, database mapping, and QA context logic.
 3. **Background Job Queue:** Processes PDF conversion and Gemini extraction.
@@ -47,6 +49,7 @@ Save Event & Character lists to PostgreSQL (Milestone 6)
 ```
 
 ### JSON Extraction Target Model (Milestone 5)
+
 ```json
 {
   "chapter": 1,
@@ -66,21 +69,23 @@ Save Event & Character lists to PostgreSQL (Milestone 6)
 ---
 
 ## 3. Database Schema Overview
+
 The database layer maps core records needed to track manga details, sorted events, identified characters, and reading continuation bookmarks.
-*(For Prisma and SQL definitions, see [database_design.md](file:///c:/Users/DELL/OneDrive/Desktop/MangaNarrator%20Ai/docs/database_design.md)).*
+_(For Prisma and SQL definitions, see [database_design.md](file:///c:/Users/DELL/OneDrive/Desktop/MangaNarrator%20Ai/docs/database_design.md))._
 
 ---
 
 ## 4. API Endpoint Specifications
 
 To keep the MVP minimal and robust, the API surface contains exactly five endpoints:
+
 1. `POST /api/manga/upload` — Ingest PDF chapters.
 2. `POST /api/chapter/process` — Convert PDF pages and call Gemini analysis.
 3. `POST /api/story/start` — Fetch first event and set up playback layout.
 4. `POST /api/story/continue` — Fetch next event index and save reading offset.
 5. `POST /api/story/question` — Pause playback to answer text queries.
 
-*(For detailed payloads and examples, see [api_design.md](file:///c:/Users/DELL/OneDrive/Desktop/MangaNarrator%20Ai/docs/api_design.md)).*
+_(For detailed payloads and examples, see [api_design.md](file:///c:/Users/DELL/OneDrive/Desktop/MangaNarrator%20Ai/docs/api_design.md))._
 
 ---
 
@@ -121,9 +126,11 @@ sequenceDiagram
 ---
 
 ## 6. Question Answering Flow & Memory Context
+
 To ensure the QA engine is context-aware without spoiling future plot points:
+
 1. User submits a question at event order $N$.
 2. Backend queries only `StoryEvent` records where `chapterId` matches and `order` is $\le N$.
 3. History descriptions are compiled into a chronological text block.
-4. Gemini 2.5 Flash processes the question, referencing *only* the compiled text block.
+4. Gemini 2.5 Flash processes the question, referencing _only_ the compiled text block.
 5. Future events are completely omitted from the prompt, making spoilers technically impossible.

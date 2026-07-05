@@ -1,20 +1,23 @@
-import React from "react";
-import "../styles/globals.css";
-import QueryProvider from "../lib/query-provider";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { QueryProvider } from "@/lib/query/provider";
 
-export const metadata = {
-  title: "MangaNarrator AI - Interactive Manga Narration",
-  description: "AI-powered multimodal Manga-to-Audio reader",
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: "MangaNarrator AI",
+  description: "AI-powered manga narration and analysis",
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="en" className="dark">
-      <body className="bg-background text-foreground antialiased min-h-screen">
+    <html lang="en">
+      <body className={inter.className}>
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>

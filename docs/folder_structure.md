@@ -1,11 +1,12 @@
 # Workspace Folder Structure Specification
+
 ## MangaNarrator AI: Production-Grade Simplified Project Architecture
 
-| Attribute | Details |
-| :--- | :--- |
-| **Product Name** | MangaNarrator AI |
-| **Document Version** | 1.2.0 |
-| **Date** | June 19, 2026 |
+| Attribute            | Details          |
+| :------------------- | :--------------- |
+| **Product Name**     | MangaNarrator AI |
+| **Document Version** | 1.2.0            |
+| **Date**             | June 19, 2026    |
 
 ---
 
@@ -86,9 +87,10 @@ manganarrator-backend/
 ---
 
 ## 3. Folder Purpose Explanations
-* **`manganarrator-backend/src/modules/processor/`**: Manages background ingestion queue logic. Houses the file-system processors and Gemini vision execution calls.
-* **`manganarrator-backend/src/modules/narration/`**: Core API router containing endpoints for:
-  * `POST /story/start`
-  * `POST /story/continue`
-  * `POST /story/question`
-* **`manganarrator-frontend/src/hooks/use-audio.ts`**: The client-side Text-to-Speech (TTS) executor utilizing either Web Speech API or simple backend voice synthesizers.
+
+- **`manganarrator-backend/src/modules/processor/`**: Manages background ingestion queue logic. Houses the file-system processors and Gemini vision execution calls.
+- **`manganarrator-backend/src/modules/narration/`**: Core API router containing endpoints for:
+  - `POST /story/start`
+  - `POST /story/continue`
+  - `POST /story/question`
+- **`manganarrator-frontend/src/hooks/use-audio.ts`**: The client-side Text-to-Speech (TTS) executor utilizing either Web Speech API or simple backend voice synthesizers.

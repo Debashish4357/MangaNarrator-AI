@@ -1,12 +1,13 @@
 # REST API Design Specification
+
 ## MangaNarrator AI: Core MVP Endpoints
 
-| Attribute | Details |
-| :--- | :--- |
-| **Product Name** | MangaNarrator AI |
-| **Document Version** | 1.2.0 |
-| **Date** | June 19, 2026 |
-| **Protocol** | HTTP/1.1 REST (JSON) |
+| Attribute            | Details              |
+| :------------------- | :------------------- |
+| **Product Name**     | MangaNarrator AI     |
+| **Document Version** | 1.2.0                |
+| **Date**             | June 19, 2026        |
+| **Protocol**         | HTTP/1.1 REST (JSON) |
 
 ---
 
@@ -27,16 +28,18 @@ The application features five core endpoints to handle ingestion, analysis, narr
 ## 2. API Detail Specifications
 
 ### 2.1 Ingest PDF Chapters
-* **Route:** `/api/manga/upload`
-* **Method:** `POST`
-* **Content-Type:** `multipart/form-data`
-* **Request Body:**
-  * `mangaTitle`: String (Required, name of manga)
-  * `chapterNumber`: Number (Required)
-  * `file`: File (Required, PDF only, max size 100MB)
-* **Error Cases:**
-  * `400 Bad Request`: Missing field or non-PDF file.
-* **Example Request:**
+
+- **Route:** `/api/manga/upload`
+- **Method:** `POST`
+- **Content-Type:** `multipart/form-data`
+- **Request Body:**
+  - `mangaTitle`: String (Required, name of manga)
+  - `chapterNumber`: Number (Required)
+  - `file`: File (Required, PDF only, max size 100MB)
+- **Error Cases:**
+  - `400 Bad Request`: Missing field or non-PDF file.
+- **Example Request:**
+
   ```http
   POST /api/manga/upload HTTP/1.1
   Host: localhost:3000
@@ -57,7 +60,8 @@ The application features five core endpoints to handle ingestion, analysis, narr
   [Raw PDF Data]
   ------WebKitFormBoundary--
   ```
-* **Example Response (201 Created):**
+
+- **Example Response (201 Created):**
   ```json
   {
     "success": true,
@@ -70,19 +74,20 @@ The application features five core endpoints to handle ingestion, analysis, narr
 ---
 
 ### 2.2 Process Chapter
-* **Route:** `/api/chapter/process`
-* **Method:** `POST`
-* **Request Body:**
+
+- **Route:** `/api/chapter/process`
+- **Method:** `POST`
+- **Request Body:**
   ```json
   {
     "chapterId": "2f6c8d11-c918-47ad-ba8d-bf8d4076ea01"
   }
   ```
-* **Validation Rules:**
-  * `chapterId`: UUID (Required)
-* **Error Cases:**
-  * `404 Not Found`: Chapter ID doesn't exist.
-* **Example Response (200 OK):**
+- **Validation Rules:**
+  - `chapterId`: UUID (Required)
+- **Error Cases:**
+  - `404 Not Found`: Chapter ID doesn't exist.
+- **Example Response (200 OK):**
   ```json
   {
     "success": true,
@@ -95,19 +100,20 @@ The application features five core endpoints to handle ingestion, analysis, narr
 ---
 
 ### 2.3 Start Story Narration
-* **Route:** `/api/story/start`
-* **Method:** `POST`
-* **Request Body:**
+
+- **Route:** `/api/story/start`
+- **Method:** `POST`
+- **Request Body:**
   ```json
   {
     "chapterId": "2f6c8d11-c918-47ad-ba8d-bf8d4076ea01"
   }
   ```
-* **Validation Rules:**
-  * `chapterId`: UUID (Required)
-* **Error Cases:**
-  * `404 Not Found`: Chapter doesn't exist or is not fully processed yet.
-* **Example Response (200 OK):**
+- **Validation Rules:**
+  - `chapterId`: UUID (Required)
+- **Error Cases:**
+  - `404 Not Found`: Chapter doesn't exist or is not fully processed yet.
+- **Example Response (200 OK):**
   ```json
   {
     "success": true,
@@ -123,21 +129,22 @@ The application features five core endpoints to handle ingestion, analysis, narr
 ---
 
 ### 2.4 Continue Story Narration
-* **Route:** `/api/story/continue`
-* **Method:** `POST`
-* **Request Body:**
+
+- **Route:** `/api/story/continue`
+- **Method:** `POST`
+- **Request Body:**
   ```json
   {
     "chapterId": "2f6c8d11-c918-47ad-ba8d-bf8d4076ea01",
     "currentOrder": 1
   }
   ```
-* **Validation Rules:**
-  * `chapterId`: UUID (Required)
-  * `currentOrder`: Integer (Required, updates the reading progress offset)
-* **Error Cases:**
-  * `404 Not Found`: Next event not found (reached end of chapter).
-* **Example Response (200 OK):**
+- **Validation Rules:**
+  - `chapterId`: UUID (Required)
+  - `currentOrder`: Integer (Required, updates the reading progress offset)
+- **Error Cases:**
+  - `404 Not Found`: Next event not found (reached end of chapter).
+- **Example Response (200 OK):**
   ```json
   {
     "success": true,
@@ -152,9 +159,10 @@ The application features five core endpoints to handle ingestion, analysis, narr
 ---
 
 ### 2.5 Ask Narrative Context Question
-* **Route:** `/api/story/question`
-* **Method:** `POST`
-* **Request Body:**
+
+- **Route:** `/api/story/question`
+- **Method:** `POST`
+- **Request Body:**
   ```json
   {
     "chapterId": "2f6c8d11-c918-47ad-ba8d-bf8d4076ea01",
@@ -162,11 +170,11 @@ The application features five core endpoints to handle ingestion, analysis, narr
     "question": "Why is the crab monster attacking?"
   }
   ```
-* **Validation Rules:**
-  * `chapterId`: UUID (Required)
-  * `currentOrder`: Integer (Required, filters history up to this event order)
-  * `question`: String (Required, non-empty)
-* **Example Response (200 OK):**
+- **Validation Rules:**
+  - `chapterId`: UUID (Required)
+  - `currentOrder`: Integer (Required, filters history up to this event order)
+  - `question`: String (Required, non-empty)
+- **Example Response (200 OK):**
   ```json
   {
     "answer": "Crablante mentions he transformed into a crab monster after eating too much crab, and is now seeking revenge on a chin-cleft kid who drew on him with a marker."

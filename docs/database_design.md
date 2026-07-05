@@ -1,13 +1,14 @@
 # Database Design Document
+
 ## MangaNarrator AI: Simplified PostgreSQL Schema & Prisma ORM Mapping
 
-| Attribute | Details |
-| :--- | :--- |
-| **Product Name** | MangaNarrator AI |
-| **Document Version** | 1.3.0 |
-| **Date** | June 19, 2026 |
-| **DBMS** | PostgreSQL |
-| **ORM** | Prisma ORM |
+| Attribute            | Details          |
+| :------------------- | :--------------- |
+| **Product Name**     | MangaNarrator AI |
+| **Document Version** | 1.3.0            |
+| **Date**             | June 19, 2026    |
+| **DBMS**             | PostgreSQL       |
+| **ORM**              | Prisma ORM       |
 
 ---
 
@@ -159,8 +160,8 @@ model StoryProgress {
 ## 4. Index Recommendations & Optimizations
 
 1. **`StoryEvent (chapterId, eventOrder)`**
-   * *Type:* Composite Index (Created implicitly by `@@unique` constraint).
-   * *Purpose:* Instantly loads events in sequential order for playback and question contexts.
+   - _Type:_ Composite Index (Created implicitly by `@@unique` constraint).
+   - _Purpose:_ Instantly loads events in sequential order for playback and question contexts.
 2. **`StoryProgress (userId, mangaId)`**
-   * *Type:* Composite Index (Implicit by `@@unique`).
-   * *Purpose:* Retrieves or updates bookmarks during player load and narration events.
+   - _Type:_ Composite Index (Implicit by `@@unique`).
+   - _Purpose:_ Retrieves or updates bookmarks during player load and narration events.
